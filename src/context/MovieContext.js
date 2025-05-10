@@ -3,14 +3,8 @@ import React, { createContext, useState, useEffect } from 'react';
 const MovieContext = createContext();
 
 const MovieProvider = ({ children }) => {
-  const [lastSearchedTerm, setLastSearchedTerm] = useState(() => {
-    return localStorage.getItem('lastSearchedTerm') || '';
-  });
-
-  const [favoriteMovies, setFavoriteMovies] = useState(() => {
-    const savedFavorites = localStorage.getItem('favoriteMovies');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
+  const [lastSearchedTerm, setLastSearchedTerm] = useState(localStorage.getItem('lastSearchedTerm') || '');
+  const [favoriteMovies, setFavoriteMovies] = useState(JSON.parse(localStorage.getItem('favoriteMovies')) || []);
 
   useEffect(() => {
     localStorage.setItem('lastSearchedTerm', lastSearchedTerm);
@@ -19,10 +13,6 @@ const MovieProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('favoriteMovies', JSON.stringify(favoriteMovies));
   }, [favoriteMovies]);
-
-  const updateSearchTerm = (term) => {
-    setLastSearchedTerm(term);
-  };
 
   const addFavoriteMovie = (movie) => {
     setFavoriteMovies((prevFavorites) => [...prevFavorites, movie]);
@@ -33,7 +23,7 @@ const MovieProvider = ({ children }) => {
   };
 
   return (
-    <MovieContext.Provider value={{ lastSearchedTerm, favoriteMovies, updateSearchTerm, addFavoriteMovie, removeFavoriteMovie }}>
+    <MovieContext.Provider value={{ lastSearchedTerm, setLastSearchedTerm, favoriteMovies, addFavoriteMovie, removeFavoriteMovie }}>
       {children}
     </MovieContext.Provider>
   );

@@ -3,13 +3,11 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React from 'react';
 import { ThemeProvider } from './context/ThemeContext';
-import { MovieProvider } from './context/MovieContext';
 
 const App = () => {
   return (
     <ThemeProvider>
-      <MovieProvider>
-        <Router>
+      <Router>
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
@@ -25,7 +23,6 @@ const App = () => {
           </header>
         </div>
       </Router>
-    </MovieProvider>
     </ThemeProvider>
   );
 };
