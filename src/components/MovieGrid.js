@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MovieCard from './MovieCard';
 import { useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/material';
 
 const MovieGrid = ({ movies }) => {
   const navigate = useNavigate();
@@ -11,11 +12,13 @@ const MovieGrid = ({ movies }) => {
   };
 
   return (
-    <div className="movie-grid">
+    <Grid container spacing={2}>
       {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} onClick={handleCardClick} />
+        <Grid item xs={12} sm={6} md={4} key={movie.id}>
+          <MovieCard movie={movie} onClick={handleCardClick} />
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 };
 

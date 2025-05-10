@@ -6,6 +6,7 @@ import GenreChips from '../components/GenreChips';
 import CastList from '../components/CastList';
 import TrailerEmbed from '../components/TrailerEmbed';
 import { Snackbar, Alert, CircularProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -43,12 +44,20 @@ const MovieDetails = () => {
   </Snackbar>;
 
   return (
-    <div>
-      <MovieInfo title={movie.title} poster={movie.poster_path} overview={movie.overview} />
-      <GenreChips genres={movie.genres} />
-      <CastList cast={credits.cast.slice(0, 5)} />
-      <TrailerEmbed videos={videos.results} />
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={8}>
+        <MovieInfo title={movie.title} poster={movie.poster_path} overview={movie.overview} />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <GenreChips genres={movie.genres} />
+      </Grid>
+      <Grid item xs={12}>
+        <CastList cast={credits.cast.slice(0, 5)} />
+      </Grid>
+      <Grid item xs={12}>
+        <TrailerEmbed videos={videos.results} />
+      </Grid>
+    </Grid>
   );
 };
 
