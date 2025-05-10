@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import MovieGrid from '../components/MovieGrid';
-import { Select, MenuItem, Slider } from '@mui/material';
+import { Select, MenuItem, Slider, Snackbar, Alert, CircularProgress } from '@mui/material';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -10,10 +10,20 @@ const Home = () => {
   const [genre, setGenre] = useState('');
   const [year, setYear] = useState('');
   const [minRating, setMinRating] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchMovies = async (searchQuery, pageNumber) => {
-    const response = await searchMovies(searchQuery, pageNumber);
-    setMovies((prevMovies) => [...prevMovies, ...response.results]);
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await searchMovies(searchQuery, pageNumber);
+      setMovies((prevMovies) => [...prevMovies, ...response.results]);
+    } catch (err) {
+      setError('API failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchGenres = async () => {
@@ -88,6 +98,12 @@ const Home = () => {
         min={0}
         max={10}
       />
+      {loading && <CircularProgress />}
+      {error && <Snackbar open={true} autoHideDuration={6000} onClose={() => setError(null)}>
+        <Alert onClose={() => setError(null)} severity="error">
+          {error}
+        </Alert>
+      </Snackbar>}
       <MovieGrid movies={movies} />
       <button onClick={loadMoreMovies}>Load More</button>
       Home Page
